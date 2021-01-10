@@ -15,10 +15,10 @@ namespace PersonalWebsite.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .
-                .AddEnvironmentVariables
-                .add;
+                .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
+                .AddJsonFile("appsettings.ignore.json", reloadOnChange: true, optional: true)
+                .AddEnvironmentVariables()
+                .Build();
         }
 
         public IConfiguration Configuration { get; }
