@@ -1,0 +1,21 @@
+﻿@model PersonalWebsite.Web.Areas.Blog.Post.PostViewModel
+@{
+    Layout = PersonalWebsite.Web.Views.MainLayout;
+}
+
+<p>Published on @Model.PublishDate.ToString("dd/MMM/yyyy")</p>
+<h1>@Model.Title</h1>
+
+<div id="post-content"></div>
+
+@section Scripts {
+
+    <script src="~/lib/showdown/showdown.min.js"></script>
+    <script>
+        window.jQuery.get("/api/blog/@Model.Slug", function (data) {
+            var converter = new showdown.Converter();
+            var html = converter.makeHtml(data.content);
+            document.getElementById("post-content").innerHTML = html;
+        });
+    </script>
+}

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PersonalWebsite.Web.EntityFramework.Entities.Post>
+@{
+    Layout = PersonalWebsite.Web.Views.MainLayout;
+}
+
+<div class="row">
+    <div id="posts-container" class="col-lg-8 col-md-10 mx-auto">
+        @foreach (var post in Model)
+        {
+            <div class="post-preview">
+                <a href="/blog/@post.Slug">
+                    <h2 class="post-title">@post.Title</h2>
+                    <h3 class="post-subtitle">@post.Title</h3>
+                </a>
+                <p class="post-meta">
+                    Published on @post.PublishingDate.ToString("dd/MMM/yyyy")
+                </p>
+            </div>
+        }
+        <hr>
+        @*<!-- Pager -->
+            <div class="clearfix">
+                <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+            </div>*@
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        const renderPost = (post) => {
+            return `<div class="post-preview">
+<a href="/blog/${post.slug}">
+    <h2 class="post-title">${post.Title}</h2>
+    <h3 class="post-subtitle">${post.Title}</h3>
+</a>
+<p class="post-meta">
+    Published on ${post.publishingDate}.ToString("dd/MMM/yyyy")
+</p>
+</div>`;
+        };
+
+        window.jQuery.get("/api/posts", (data) => {
+            console.log(data);
+            if (!data) {
+                return;
+            }
+            var postsContainer = document.getElementById("posts-container");
+            postsContainer.innerHTML = posts.map(x => renderPost()).join("\n");
+        });
+    </script>
+}
