@@ -7,9 +7,9 @@ namespace PersonalWebsite.Web.Api.Posts.GetAll
 {
     public class GetAllPostsService : IGetAllPostsService
     {
-        private readonly PersonalWebsiteDbContext _context;
+        private readonly PeanutsCmsDbContext _context;
 
-        public GetAllPostsService(PersonalWebsiteDbContext context)
+        public GetAllPostsService(PeanutsCmsDbContext context)
         {
             _context = context;
         }

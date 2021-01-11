@@ -6,9 +6,9 @@ namespace PersonalWebsite.Web.Areas.Blog.Post
 {
     public class PostService : IPostService
     {
-        private readonly PersonalWebsiteDbContext _context;
+        private readonly PeanutsCmsDbContext _context;
 
-        public PostService(PersonalWebsiteDbContext context)
+        public PostService(PeanutsCmsDbContext context)
         {
             _context = context;
         }

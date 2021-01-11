@@ -1,0 +1,44 @@
+﻿@model PersonalWebsite.Web.Areas.Blog.Post.EditPost.EditPostViewModel
+@{
+    Layout = PersonalWebsite.Web.Views.MainLayout;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <textarea id="post-content"></textarea>
+    </div>
+    <div id="post-content-html" class="col-md-6">
+
+    </div>
+</div>
+
+@section Styles{
+    <style>
+        #post-content {
+            width: 100%;
+            min-height: 500px;
+            overflow: auto;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/lib/showdown/showdown.min.js"></script>
+    <script type="text/javascript">
+        let converter = new showdown.Converter();
+        let postContentHtml = document.getElementById("post-content-html");
+        let postContent = document.getElementById("post-content");
+
+        const updateHtml = () => {
+            let text = postContent.value;
+            postContentHtml.innerHTML = converter.makeHtml(text);
+        };
+
+        postContent.onkeydown = updateHtml;
+
+        window.jQuery.get("/api/blog/@Model.Slug", (post) => {
+            postContent.value = post.content;
+            updateHtml();
+        });
+    </script>
+}

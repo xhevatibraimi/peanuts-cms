@@ -6,7 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonalWebsite.Web.Api.Posts.GetAll;
 using PersonalWebsite.Web.Areas.Blog.Post;
+using PersonalWebsite.Web.Areas.Membership.Login;
 using PersonalWebsite.Web.EntityFramework;
+using PersonalWebsite.Web.EntityFramework.Entities;
+using PersonalWebsite.Web.Extensions;
 
 namespace PersonalWebsite.Web
 {
@@ -26,7 +29,14 @@ namespace PersonalWebsite.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<PersonalWebsiteDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<PeanutsCmsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<PeanutsCmsDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/membership/login";
+            });
+            services.RunInitialSetup(Configuration);
             AddServices(services);
         }
 
@@ -45,6 +55,7 @@ namespace PersonalWebsite.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +68,8 @@ namespace PersonalWebsite.Web
 
         private void AddServices(IServiceCollection services)
         {
+            services.AddTransient<ILoginService, LoginService>();
+
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IGetAllPostsService, GetAllPostsService>();
         }

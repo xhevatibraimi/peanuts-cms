@@ -14,6 +14,15 @@
             public class Post
             {
                 public const string PostView = "~/Areas/Blog/Post/Post.cshtml";
+                public const string EditPostView = "~/Areas/Blog/Post/EditPost/EditPost.cshtml";
+            }
+        }
+
+        public class Membership
+        {
+            public class Login
+            {
+                public const string LoginView = "~/Areas/Membership/Login/Login.cshtml";
             }
         }
     }
