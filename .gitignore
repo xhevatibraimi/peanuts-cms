@@ -12,6 +12,7 @@
 
 # VSCode workspaces
 *.code-workspace
+*.vscode
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
