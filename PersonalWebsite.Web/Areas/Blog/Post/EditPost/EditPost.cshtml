@@ -3,7 +3,7 @@
     Layout = PersonalWebsite.Web.Views.Layouts.EditPostLayout;
 }
 
-<div class="container full-height">
+<div class="container-fluid full-height">
     <div class="row full-height">
         <div class="col-md-6 full-height">
             <textarea class="source full-height">...Loading</textarea>
@@ -262,15 +262,20 @@
             height: 100%;
         }
 
+        .container-fluid{
+            padding:1%;
+        }
+
         body {
             overflow-x: hidden;
-            padding-bottom: 180px;
+            /*padding-top: 5%;
+            padding-bottom: 5%;*/
             background-color: #fbfbfb;
         }
 
-        .demo-options {
+        /*.demo-options {
             margin-bottom: 10px;
-        }
+        }*/
 
         .opt__strict .not-strict {
             opacity: 0.3;
