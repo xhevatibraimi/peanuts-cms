@@ -4,6 +4,11 @@
     {
         public const string MainLayout = "~/Views/Shared/_Layout.cshtml";
 
+        public class Layouts
+        {
+            public const string EditPostLayout = "~/Views/Layouts/EditPostLayout.cshtml";
+        }
+
         public class Home
         {
             public const string HomeView = "~/Areas/Home/Home.cshtml";

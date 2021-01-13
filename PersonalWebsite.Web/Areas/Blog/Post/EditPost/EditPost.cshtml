@@ -1,44 +1,446 @@
 ﻿@model PersonalWebsite.Web.Areas.Blog.Post.EditPost.EditPostViewModel
 @{
-    Layout = PersonalWebsite.Web.Views.MainLayout;
+    Layout = PersonalWebsite.Web.Views.Layouts.EditPostLayout;
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <textarea id="post-content"></textarea>
-    </div>
-    <div id="post-content-html" class="col-md-6">
-
+@*<div class="container full-height">
+        <div class="row">
+            <div class="col-md-6">
+                <textarea class="source">asdasdalsjdbahdajhbaskj</textarea>
+            </div>
+            <div class="col-md-6">
+                <div class="result-html"></div>
+            </div>
+        </div>
+    </div>*@
+<div class="container full-height">
+    <div class="row full-height">
+        <div class="col-md-6 full-height">
+            <textarea class="source full-height">asdasdalsjdbahdajhbaskj</textarea>
+        </div>
+        <section class="col-md-6 full-height">
+            <div class="result-html full-height"></div>
+        </section>
     </div>
 </div>
 
 @section Styles{
     <style>
-        #post-content {
-            width: 100%;
-            min-height: 500px;
-            overflow: auto;
+                html,
+                body,
+                .full-height {
+                    height: 100%;
+                }
+
+                body {
+                    overflow-x: hidden;
+                    padding-bottom: 180px;
+                    background-color: #fbfbfb;
+                }
+
+                .demo-options {
+                    margin-bottom: 10px;
+                }
+
+                .opt__strict .not-strict {
+                    opacity: 0.3;
+                }
+                /* .checkbox {
+          margin-right: 10px;
+        } */
+                .source {
+                    width: 100%;
+                    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+                    font-size: 13px;
+                    padding: 2px;
+                }
+
+                .result-html {
+                    padding: 2px 10px;
+                    overflow: auto;
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+                    .result-html img {
+                        max-width: 100%;
+                    }
+
+                .result-src,
+                .result-debug {
+                    display: none;
+                    background-color: #fff;
+                }
+
+                .result-src-content,
+                .result-debug-content {
+                    white-space: pre;
+                }
+
+                .result-as-html .result-html {
+                    display: block;
+                }
+
+                .result-as-html .result-src,
+                .result-as-html .result-debug {
+                    display: none;
+                }
+
+                .result-as-src .result-src {
+                    display: block;
+                }
+
+                .result-as-src .result-html,
+                .result-as-src .result-debug {
+                    display: none;
+                }
+
+                .result-as-debug .result-debug {
+                    display: block;
+                }
+
+                .result-as-debug .result-html,
+                .result-as-debug .result-src {
+                    display: none;
+                }
+                /* .demo-control {
+          position: absolute;
+          right: 40px;
+          top: 0;
+          border-radius: 0 0 6px 6px;
+          font-size: 12px;
+          background-color: #666;
+          color: #fff !important;
+          opacity: 0.6;
+          -webkit-transition: opacity 0.5s ease-in-out;
+                  transition: opacity 0.5s ease-in-out;
         }
+        .demo-control:hover {
+          opacity: 1;
+        }
+        .demo-control a {
+          padding: 0 20px;
+          color: #fff !important;
+        }
+        .demo-control a:first-child {
+          padding-left: 30px;
+        }
+        .demo-control a:last-child {
+          padding-right: 30px;
+        } */
+                .hljs {
+                    background: none;
+                    padding: 0;
+                }
+
+                .footnotes {
+                    -moz-column-count: 2;
+                    -webkit-column-count: 2;
+                    column-count: 2;
+                }
+
+                .footnotes-list {
+                    padding-left: 2em;
+                }
+
+                .gh-ribbon {
+                    display: block;
+                    position: absolute;
+                    right: -60px;
+                    top: 44px;
+                    -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                    width: 230px;
+                    z-index: 10000;
+                    white-space: nowrap;
+                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    background-color: #686868;
+                    box-shadow: 0 0 2px rgba(102,102,102,0.4);
+                    padding: 1px 0;
+                }
+
+                    .gh-ribbon a {
+                        text-decoration: none !important;
+                        border: 1px solid #ccc;
+                        color: #fff;
+                        display: block;
+                        font-size: 13px;
+                        font-weight: 700;
+                        outline: medium none;
+                        padding: 4px 50px 2px;
+                        text-align: center;
+                    }
+                /* .form-inline .radio,
+        .form-inline .checkbox {
+          display: inline-block;
+          margin-bottom: 0;
+          margin-top: 0;
+        } */
+                /* .form-inline .form-group {
+          display: inline-block;
+          margin-bottom: 0;
+          vertical-align: middle;
+        } */
+                /* .form-inline .form-control {
+          display: inline-block;
+          vertical-align: middle;
+          width: auto;
+        } */
+
     </style>
 }
 
 @section Scripts{
-    <script src="~/lib/showdown/showdown.min.js"></script>
+    @*<script src="~/lib/showdown/showdown.min.js"></script>*@
+    <script src="~/lib/remarkable/remarkable.min.js"></script>
     <script type="text/javascript">
-        let converter = new showdown.Converter();
-        let postContentHtml = document.getElementById("post-content-html");
-        let postContent = document.getElementById("post-content");
 
-        const updateHtml = () => {
-            let text = postContent.value;
-            postContentHtml.innerHTML = converter.makeHtml(text);
+        var mdHtml, mdSrc, scrollMap;
+
+        var defaults = {
+            html: false,        // Enable HTML tags in source
+            xhtmlOut: false,        // Use '/' to close single tags (<br />)
+            breaks: false,        // Convert '\n' in paragraphs into <br>
+            langPrefix: 'language-',  // CSS language prefix for fenced blocks
+            linkify: false,         // autoconvert URL-like texts to links
+            linkTarget: '',           // set target to open link in
+            typographer: true,         // Enable smartypants and other sweet transforms
+
+            // options below are for demo only
+            _highlight: true,
+            _strict: false,
+            _view: 'html'               // html / src / debug
         };
 
-        postContent.onkeydown = updateHtml;
+        defaults.highlight = function (str, lang) {
+            if (!defaults._highlight || !window.hljs) { return ''; }
+
+            var hljs = window.hljs;
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(lang, str).value;
+                } catch (__) { }
+            }
+
+            try {
+                return hljs.highlightAuto(str).value;
+            } catch (__) { }
+
+            return '';
+        };
+
+        function setOptionClass(name, val) {
+            if (val) {
+                $('body').addClass('opt_' + name);
+            } else {
+                $('body').removeClass('opt_' + name);
+            }
+        }
+
+        function setResultView(val) {
+            $('body').removeClass('result-as-html');
+            $('body').removeClass('result-as-src');
+            $('body').removeClass('result-as-debug');
+            $('body').addClass('result-as-' + val);
+            defaults._view = val;
+        }
+
+        function mdInit() {
+            if (defaults._strict) {
+                debugger;
+                mdHtml = new window.remarkable.Remarkable('commonmark');
+                mdSrc = new window.remarkable.Remarkable('commonmark');
+            } else {
+                mdHtml = new window.remarkable.Remarkable('full', defaults);
+                mdSrc = new window.remarkable.Remarkable('full', defaults);
+            }
+
+            // Beautify output of parser for html content
+            mdHtml.renderer.rules.table_open = function () {
+                return '<table class="table table-striped">\n';
+            };
+
+            //
+            // Inject line numbers for sync scroll. Notes:
+            //
+            // - We track only headings and paragraphs on first level. That's enougth.
+            // - Footnotes content causes jumps. Level limit filter it automatically.
+            //
+
+            mdHtml.renderer.rules.paragraph_open = function (tokens, idx) {
+                var line;
+                if (tokens[idx].lines && tokens[idx].level === 0) {
+                    line = tokens[idx].lines[0];
+                    return '<p class="line" data-line="' + line + '">';
+                }
+                return '<p>';
+            };
+
+            mdHtml.renderer.rules.heading_open = function (tokens, idx) {
+                var line;
+                if (tokens[idx].lines && tokens[idx].level === 0) {
+                    line = tokens[idx].lines[0];
+                    return '<h' + tokens[idx].hLevel + ' class="line" data-line="' + line + '">';
+                }
+                return '<h' + tokens[idx].hLevel + '>';
+            };
+        }
+
+        function setHighlightedlContent(selector, content, lang) {
+            if (window.hljs) {
+                $(selector).html(window.hljs.highlight(lang, content).value);
+            } else {
+                $(selector).text(content);
+            }
+        }
+
+        function updateResult() {
+            var source = $('.source').val();
+
+            // Update only active view to avoid slowdowns
+            // (debug & src view with highlighting are a bit slow)
+            if (defaults._view === 'src') {
+                setHighlightedlContent('.result-src-content', mdSrc.render(source), 'html');
+
+            } else if (defaults._view === 'debug') {
+                setHighlightedlContent(
+                    '.result-debug-content',
+                    JSON.stringify(mdSrc.parse(source, { references: {} }), null, 2),
+                    'json'
+                );
+
+            } else { /*defaults._view === 'html'*/
+                $('.result-html').html(mdHtml.render(source));
+            }
+
+            // reset lines mapping cache on content update
+            scrollMap = null;
+
+            // try {
+            //   if (source) {
+            //     // serialize state - source and options
+            //     permalink.href = '#md64=' + window.btoa(encodeURI(JSON.stringify({
+            //       source: source,
+            //       defaults: _.omit(defaults, 'highlight')
+            //     })));
+            //   } else {
+            //     permalink.href = '';z
+            //   }
+            // } catch (__) {
+            //   permalink.href = '';
+            // }
+        }
+
+        // Build offsets for each line (lines can be wrapped)
+        // That's a bit dirty to process each line everytime, but ok for demo.
+        // Optimizations are required only for big texts.
+        function buildScrollMap() {
+            var i, offset, nonEmptyList, pos, a, b, lineHeightMap, linesCount,
+                acc, sourceLikeDiv, textarea = $('.source'),
+                _scrollMap;
+
+            sourceLikeDiv = $('<div />').css({
+                position: 'absolute',
+                visibility: 'hidden',
+                height: 'auto',
+                width: textarea[0].clientWidth,
+                'font-size': textarea.css('font-size'),
+                'font-family': textarea.css('font-family'),
+                'line-height': textarea.css('line-height'),
+                'white-space': textarea.css('white-space')
+            }).appendTo('body');
+
+            offset = $('.result-html').scrollTop() - $('.result-html').offset().top;
+            _scrollMap = [];
+            nonEmptyList = [];
+            lineHeightMap = [];
+
+            acc = 0;
+            textarea.val().split('\n').forEach(function (str) {
+                var h, lh;
+
+                lineHeightMap.push(acc);
+
+                if (str.length === 0) {
+                    acc++;
+                    return;
+                }
+
+                sourceLikeDiv.text(str);
+                h = parseFloat(sourceLikeDiv.css('height'));
+                lh = parseFloat(sourceLikeDiv.css('line-height'));
+                acc += Math.round(h / lh);
+            });
+            sourceLikeDiv.remove();
+            lineHeightMap.push(acc);
+            linesCount = acc;
+
+            for (i = 0; i < linesCount; i++) { _scrollMap.push(-1); }
+
+            nonEmptyList.push(0);
+            _scrollMap[0] = 0;
+
+            $('.line').each(function (n, el) {
+                var $el = $(el), t = $el.data('line');
+                if (t === '') { return; }
+                t = lineHeightMap[t];
+                if (t !== 0) { nonEmptyList.push(t); }
+                _scrollMap[t] = Math.round($el.offset().top + offset);
+            });
+
+            nonEmptyList.push(linesCount);
+            _scrollMap[linesCount] = $('.result-html')[0].scrollHeight;
+
+            pos = 0;
+            for (i = 1; i < linesCount; i++) {
+                if (_scrollMap[i] !== -1) {
+                    pos++;
+                    continue;
+                }
+
+                a = nonEmptyList[pos];
+                b = nonEmptyList[pos + 1];
+                _scrollMap[i] = Math.round((_scrollMap[b] * (i - a) + _scrollMap[a] * (b - i)) / (b - a));
+            }
+
+            return _scrollMap;
+        }
+
+        function syncScroll() {
+            var textarea = $('.source'),
+                lineHeight = parseFloat(textarea.css('line-height')),
+                lineNo, posTo;
+
+            lineNo = Math.floor(textarea.scrollTop() / lineHeight);
+            if (!scrollMap) { scrollMap = buildScrollMap(); }
+            posTo = scrollMap[lineNo];
+            $('.result-html').stop(true).animate({
+                scrollTop: posTo
+            }, 100, 'linear');
+        }
+
+        // Setup listeners
+        $('.source').on('keyup paste cut mouseup', () => {
+            setTimeout(() => {
+                updateResult();
+            }, 300);
+        });
+        $('.source').on('scroll', () => {
+            setTimeout(() => {
+                syncScroll();
+            }, 50);
+        });
+
+        // Need to recalculate line positions on window resize
+        $(window).on('resize', function () {
+            scrollMap = null;
+        });
 
         window.jQuery.get("/api/blog/@Model.Slug", (post) => {
-            postContent.value = post.content;
-            updateHtml();
+            mdInit();
+            $('.source').val(post.content);
+            updateResult();
         });
     </script>
 }
