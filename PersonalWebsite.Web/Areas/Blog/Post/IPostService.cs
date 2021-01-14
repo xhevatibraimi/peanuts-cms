@@ -4,7 +4,7 @@ namespace PersonalWebsite.Web.Areas.Blog.Post
 {
     public interface IPostService
     {
-        Task<PostViewModel> GetPostByTitleAsync(string postTitle);
-        Task<PostViewModel> GetPostBySlugAsync(string postId);
+        Task<PostViewModel> GetPostByIdAsync(string postId);
+        Task<PostViewModel> GetPostBySlugAsync(string slug);
     }
 }

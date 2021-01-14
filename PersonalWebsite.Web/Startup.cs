@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonalWebsite.Web.Api.Posts.GetAll;
+using PersonalWebsite.Web.Api.Posts.SetPostContent;
 using PersonalWebsite.Web.Areas.Blog.Post;
 using PersonalWebsite.Web.Areas.Membership.Login;
 using PersonalWebsite.Web.EntityFramework;
@@ -72,6 +73,7 @@ namespace PersonalWebsite.Web
 
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IGetAllPostsService, GetAllPostsService>();
+            services.AddTransient<ISetPostContentService, SetPostContentService>();
         }
     }
 }

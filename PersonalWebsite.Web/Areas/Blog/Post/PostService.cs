@@ -13,9 +13,9 @@ namespace PersonalWebsite.Web.Areas.Blog.Post
             _context = context;
         }
 
-        public async Task<PostViewModel> GetPostByTitleAsync(string postTitle)
+        public async Task<PostViewModel> GetPostByIdAsync(string id)
         {
-            var dbPost = await _context.Posts.FirstOrDefaultAsync(x => x.Title == postTitle);
+            var dbPost = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (dbPost == null)
             {
                 return null;

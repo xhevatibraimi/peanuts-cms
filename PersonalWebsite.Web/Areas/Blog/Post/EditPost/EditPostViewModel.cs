@@ -2,6 +2,6 @@
 {
     public class EditPostViewModel
     {
-        public string Slug { get; set; }
+        public string Id { get; set; }
     }
 }

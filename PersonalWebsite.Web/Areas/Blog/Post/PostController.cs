@@ -24,10 +24,10 @@ namespace PersonalWebsite.Web.Areas.Blog.Post
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("/api/blog/{slug}")]
-        public async Task<IActionResult> GetPostBySlug(string slug)
+        [HttpGet("/api/blog/{id}")]
+        public async Task<IActionResult> GetPostById(string id)
         {
-            var post = await _postService.GetPostBySlugAsync(slug);
+            var post = await _postService.GetPostByIdAsync(id);
             if (post != null)
             {
                 return Ok(post);

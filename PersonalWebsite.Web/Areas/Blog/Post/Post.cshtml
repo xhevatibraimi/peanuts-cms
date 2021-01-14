@@ -3,6 +3,11 @@
     Layout = PersonalWebsite.Web.Views.MainLayout;
 }
 
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="/blog/posts/@Model.Id/edit" class="btn btn-info">Edit</a>
+}
+
 <p>Published on @Model.PublishDate.ToString("dd/MMM/yyyy")</p>
 <h1>@Model.Title</h1>
 
@@ -12,7 +17,7 @@
 
     <script src="~/lib/showdown/showdown.min.js"></script>
     <script>
-        window.jQuery.get("/api/blog/@Model.Slug", function (data) {
+        window.jQuery.get("/api/blog/@Model.Id", function (data) {
             var converter = new showdown.Converter();
             var html = converter.makeHtml(data.content);
             document.getElementById("post-content").innerHTML = html;
