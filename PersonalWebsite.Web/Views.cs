@@ -20,6 +20,7 @@
             {
                 public const string PostView = "~/Areas/Blog/Post/Post.cshtml";
                 public const string EditPostView = "~/Areas/Blog/Post/EditPost/EditPost.cshtml";
+                public const string DeletePostView = "~/Areas/Blog/Post/EditPost/EditPost.cshtml";
             }
         }
 
